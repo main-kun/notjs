@@ -87,7 +87,15 @@ int main(int argc, char* argv[]) {
       v8::Local<v8::Script> script =
           v8::Script::Compile(context, source).ToLocalChecked();
       v8::Local<v8::Value> result = script->Run(context).ToLocalChecked();
-      
+
+      isolate->PerformMicrotaskCheckpoint();
+
+      v8::Local<v8::String> checkSource =
+        v8::String::NewFromUtf8(isolate, "message;", v8::NewStringType::kNormal).ToLocalChecked();
+      v8::Local<v8::Script> checkScript =
+        v8::Script::Compile(context, checkSource).ToLocalChecked();
+      result = checkScript->Run(context).ToLocalChecked();
+
       v8::String::Utf8Value utf8(isolate, result);
       printf("%s\n", *utf8);
     }

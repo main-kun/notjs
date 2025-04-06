@@ -17,12 +17,19 @@ LDFLAGS = -fuse-ld=lld $(LIBDIR) -lv8_monolith -lv8_libbase -lv8_libplatform -ld
 
 SRC = simple-runner.cc
 
-TARGET = simple-runner
+SRC_MICROTASK = simple-runner-microtask.cc
 
-all: $(TARGET)
+TARGET = simple-runner
+TARGET_MICROTASK = simple-runner-microtask
+
+
+all: $(TARGET) $(TARGET_MICROTASK)
 
 $(TARGET): $(SRC)
 	$(CXX) $(CXXFLAGS) $(SRC) -o $(TARGET) $(LDFLAGS)
 
+$(TARGET_MICROTASK): $(SRC_MICROTASK)
+	$(CXX) $(CXXFLAGS) $(SRC_MICROTASK) -o $(TARGET_MICROTASK) $(LDFLAGS)
+
 clean:
-	rm -f $(TARGET)
+	rm -f $(TARGET) $(TARGET_MICROTASK)
